@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monthly Self-Report — Qbil Transformation Programme</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark:    #004236;
+    --green:   #00694C;
+    --accent:  #7AB648;
+    --light-g: #D4E8C7;
+    --mint:    #E8F0EC;
+    --grey:    #B0B0B0;
+    --bg:      #F5F5F5;
+    --white:   #FFFFFF;
+    --danger:  #D64545;
+    --warning: #E8A317;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ─── Header ─────────────────────────────────────────── */
+  header {
+    background: var(--dark);
+    height: 60px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: 0 2px 16px rgba(0,66,54,.3);
+  }
+  .logo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-dot { color: var(--accent); }
+  .logo-divider {
+    width: 1px; height: 18px;
+    background: rgba(255,255,255,.2);
+  }
+  .logo-sub {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,.5);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .badge-conf {
+    font-family: 'Poppins', sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,.55);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 20px;
+    padding: 4px 12px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+
+  /* ─── Hero ───────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(140deg, #003028 0%, #004236 45%, #005a46 100%);
+    padding: 56px 40px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(122,182,72,.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; max-width: 680px; }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 20px; height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+  .hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,.68);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 26px;
+  }
+  .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+  .chip {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 99px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.14);
+    color: rgba(255,255,255,.75);
+  }
+  .chip.hi { background: rgba(122,182,72,.15); border-color: rgba(122,182,72,.3); color: #b3df84; }
+
+  /* ─── Layout ─────────────────────────────────────────── */
+  .wrap {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 36px 20px 80px;
+  }
+
+  /* ─── Progress ───────────────────────────────────────── */
+  .progress-card {
+    background: var(--white);
+    border: 1px solid var(--light-g);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px rgba(0,66,54,.05);
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .progress-top span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  #pct { color: var(--accent); }
+  .bar-bg {
+    background: var(--mint);
+    border-radius: 99px;
+    height: 7px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--dark) 0%, var(--accent) 100%);
+    border-radius: 99px;
+    width: 0%;
+    transition: width .45s cubic-bezier(.4,0,.2,1);
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot {
+    flex: 1; height: 5px; border-radius: 99px;
+    background: var(--mint);
+    transition: background .3s;
+  }
+  .dot.done   { background: var(--accent); }
+  .dot.active { background: var(--dark); }
+
+  /* ─── Cards ──────────────────────────────────────────── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--light-g);
+    border-radius: 16px;
+    padding: 30px 32px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,66,54,.05);
+    transition: box-shadow .2s;
+  }
+  .card:focus-within { box-shadow: 0 4px 22px rgba(0,66,54,.11); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding-bottom: 20px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--mint);
+  }
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .ci-mint    { background: var(--mint); }
+  .ci-green   { background: rgba(122,182,72,.13); }
+  .ci-yellow  { background: rgba(232,163,23,.11); }
+  .ci-blue    { background: rgba(59,130,196,.09); }
+
+  .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.3;
+  }
+  .card-sub {
+    font-size: 13px;
+    color: var(--grey);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* ─── Form elements ──────────────────────────────────── */
+  .grid-2   { display: grid; grid-template-columns: 1fr 1fr;      gap: 16px; margin-bottom: 16px; }
+  .grid-3   { display: grid; grid-template-columns: 1fr 1fr 1fr;  gap: 16px; margin-bottom: 16px; }
+  .grid-1   { display: grid; grid-template-columns: 1fr;          gap: 16px; margin-bottom: 16px; }
+
+  @media (max-width: 560px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    header { padding: 0 16px; }
+    .hero  { padding: 36px 16px; }
+    .card  { padding: 20px 16px; }
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  label .req { color: var(--danger); margin-left: 1px; }
+  label .opt {
+    font-weight: 400;
+    color: var(--grey);
+    font-family: 'Open Sans', sans-serif;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    border: 1.5px solid var(--light-g);
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--white);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(122,182,72,.13);
+  }
+  input::placeholder, textarea::placeholder { color: #c0cec9; }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23004236' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+  }
+
+  textarea { resize: vertical; min-height: 115px; line-height: 1.65; }
+  textarea.tall { min-height: 140px; }
+
+  .counter {
+    text-align: right;
+    font-size: 11px;
+    color: var(--grey);
+    margin-top: -2px;
+    transition: color .2s;
+  }
+  .counter.warn   { color: var(--warning); }
+  .counter.danger { color: var(--danger);  }
+
+  /* invalid state */
+  .invalid { border-color: var(--danger) !important; box-shadow: 0 0 0 3px rgba(214,69,69,.11) !important; }
+  .err { font-size: 12px; font-family: 'Poppins', sans-serif; font-weight: 500; color: var(--danger); display: none; }
+  .err.on { display: block; }
+
+  /* ─── Question blocks ────────────────────────────────── */
+  .qblock {
+    border-left: 3px solid var(--light-g);
+    padding-left: 18px;
+    margin-bottom: 20px;
+    transition: border-color .2s;
+  }
+  .qblock:focus-within { border-color: var(--accent); }
+  .qlabel {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .qbadge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--mint);
+    color: var(--dark);
+  }
+  .qhint {
+    font-size: 13px;
+    color: var(--grey);
+    margin-bottom: 10px;
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  /* ─── Tip box ────────────────────────────────────────── */
+  .tip {
+    background: var(--mint);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--dark);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .tip strong { font-family: 'Poppins', sans-serif; color: var(--green); }
+
+  /* ─── Submit card ────────────────────────────────────── */
+  .submit-card {
+    background: var(--dark);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0,66,54,.22);
+  }
+  .submit-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .submit-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,.55);
+    margin-bottom: 24px;
+    line-height: 1.65;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 38px;
+    cursor: pointer;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    box-shadow: 0 4px 18px rgba(122,182,72,.38);
+    letter-spacing: .02em;
+  }
+  .btn:hover:not(:disabled) {
+    background: #6aa03e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(122,182,72,.42);
+  }
+  .btn:active:not(:disabled) { transform: translateY(0); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+  .btn .spin {
+    width: 17px; height: 17px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    display: none;
+  }
+  .btn.loading .spin { display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── Success ────────────────────────────────────────── */
+  #ok {
+    display: none;
+    text-align: center;
+    padding: 64px 20px;
+  }
+  .ok-ring {
+    width: 84px; height: 84px;
+    background: var(--mint);
+    border: 3px solid var(--light-g);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px;
+    margin: 0 auto 24px;
+    animation: pop .5s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  @keyframes pop { from { transform: scale(.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  #ok h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 10px;
+  }
+  #ok p {
+    color: var(--grey);
+    font-size: 14.5px;
+    line-height: 1.65;
+    max-width: 400px;
+    margin: 0 auto 28px;
+  }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--mint);
+    color: var(--dark);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 13.5px;
+    border: 1.5px solid var(--light-g);
+    border-radius: 10px;
+    padding: 11px 22px;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .btn-ghost:hover { background: var(--light-g); }
+
+  /* ─── Toast ──────────────────────────────────────────── */
+  #toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(70px);
+    background: var(--dark);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13.5px; font-weight: 500;
+    padding: 13px 26px;
+    border-radius: 99px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.22);
+    z-index: 9999;
+    opacity: 0;
+    transition: all .38s cubic-bezier(.4,0,.2,1);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  #toast.show  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.ok    { background: var(--green); }
+  #toast.fail  { background: var(--danger); }
+
+  /* ─── Footer ─────────────────────────────────────────── */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--grey);
+    border-top: 1px solid var(--light-g);
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    Qbil<span class="logo-dot">●</span>
+    <div class="logo-divider"></div>
+    <span class="logo-sub">Transformation Programme</span>
+  </div>
+  <span class="badge-conf">🔒 Confidential</span>
+</header>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-tag">Monthly Self-Report</div>
+    <h1>How has your <span>month</span> been?</h1>
+    <p>This takes 5–10 minutes. Your answers go directly to Kashif and Mark — no one else. Be specific: the more real your answers, the more useful your 1-on-1 will be.</p>
+    <div class="hero-chips">
+      <span class="chip">📅 Due by the 5th of each month</span>
+      <span class="chip hi">🔒 Kashif & Mark only</span>
+      <span class="chip">⏱ ~10 minutes</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- Progress -->
+  <div class="progress-card">
+    <div class="progress-top">
+      <span>Form progress</span>
+      <span id="pct">0%</span>
+    </div>
+    <div class="bar-bg"><div class="bar-fill" id="bar"></div></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <form id="form" novalidate>
+
+    <!-- Section 1: About You -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-mint">👤</div>
+        <div>
+          <div class="card-title">About You</div>
+          <div class="card-sub">Tell us who you are and which month this report covers.</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label for="name">Full Name <span class="req">*</span></label>
+          <input id="name" type="text" placeholder="e.g. Aadil Bashir" autocomplete="name" required>
+          <span class="err" id="name-e">Please enter your full name.</span>
+        </div>
+        <div class="field">
+          <label for="month">Month <span class="req">*</span></label>
+          <input id="month" type="text" placeholder="e.g. April 2026" required>
+          <span class="err" id="month-e">Please enter the month.</span>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="field">
+          <label for="program">Programme <span class="req">*</span></label>
+          <select id="program" required>
+            <option value="">— Select —</option>
+            <option>QA Transition</option>
+            <option>Developer Transition</option>
+            <option>PM Transition</option>
+            <option>Technical Writer</option>
+            <option>UI- UX designer</option>
+            <option>Motion Desiner</option>
+          </select>
+          <span class="err" id="program-e">Please select your programme.</span>
+        </div>
+        <div class="field">
+          <label for="group">Group <span class="req">*</span></label>
+          <select id="group" required>
+            <option value="">— Select —</option>
+            <option>Group A</option>
+            <option>Group B</option>
+            <option>N/A</option>
+          </select>
+          <span class="err" id="group-e">Please select your group.</span>
+        </div>
+        <div class="field">
+          <label for="etype">Entry Type</label>
+          <select id="etype" disabled>
+            <option>Self-Report</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Q1 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-green">💡</div>
+        <div>
+          <div class="card-title">Q1 — What did you do differently this month?</div>
+          <div class="card-sub">Habits, AI tools, how you solved problems, how you worked with others.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <strong>Think about:</strong> Daily habits · AI tools you tried · A challenge you handled differently · How you collaborated. Even small shifts count — be specific about what you actually did.
+      </div>
+      <div class="qblock">
+        <div class="qlabel"><span class="qbadge">Required</span> Your answer</div>
+        <div class="qhint">Aim for 3–5 sentences. Specific examples beat general statements every time.</div>
+        <textarea id="q1" class="tall" placeholder="This month I started using Claude to draft test cases before writing them manually. It cut my prep time by ~40%. I also pushed back on a vague sprint ticket by asking for acceptance criteria upfront — something I wouldn't have done before..." required></textarea>
+        <div class="counter" id="q1c">0 / 800</div>
+        <span class="err" id="q1-e">Please answer this question.</span>
+      </div>
+    </div>
+
+    <!-- Section 3: Q2 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-yellow">🧱</div>
+        <div>
+          <div class="card-title">Q2 — Where are you stuck, or what support do you need?</div>
+          <div class="card-sub">The most valuable part of the form. Be specific — vague answers make it hard to help.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <strong>No shame here.</strong> Skill gap? Confusing process? Something you've tried that isn't working? A blocker from another team? This is exactly what the programme is for.
+      </div>
+      <div class="qblock">
+        <div class="qlabel"><span class="qbadge">Required</span> Your answer</div>
+        <div class="qhint">2–3 sentences. "Nothing" or "all good" makes it impossible to support you well.</div>
+        <textarea id="q2" class="tall" placeholder="I'm finding it hard to write meaningful test cases for the new pricing module — I don't fully understand the business rules. I've asked twice but haven't got clarity. I'd like Kashif to help me get a direct answer from the dev team..." required></textarea>
+        <div class="counter" id="q2c">0 / 800</div>
+        <span class="err" id="q2-e">Please answer this question.</span>
+      </div>
+    </div>
+
+    <!-- Section 4: Q3 -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-blue">🎯</div>
+        <div>
+          <div class="card-title">Q3 — What is your focus for next month?</div>
+          <div class="card-sub">One clear, specific commitment. You'll be asked about this in your next check-in.</div>
+        </div>
+      </div>
+      <div class="tip">
+        <strong>Be concrete.</strong> "Improve my skills" won't help you or Kashif. "Write AI-assisted test cases for at least 3 features in April" is the kind of goal that sticks.
+      </div>
+      <div class="qblock">
+        <div class="qlabel"><span class="qbadge">Required</span> Your answer</div>
+        <div class="qhint">1–2 focused sentences. One good goal beats three vague ones.</div>
+        <textarea id="q3" placeholder="Next month I'm going to use AI tools in at least 80% of my test case writing, and write a short quality-risk note to Kashif after each sprint before it becomes a bug report..." required></textarea>
+        <div class="counter" id="q3c">0 / 500</div>
+        <span class="err" id="q3-e">Please answer this question.</span>
+      </div>
+    </div>
+
+    <!-- Section 5: Optional -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon ci-mint">💬</div>
+        <div>
+          <div class="card-title">Anything else? <span style="font-weight:400;font-size:13px;color:var(--grey)">(Optional)</span></div>
+          <div class="card-sub">A win you're proud of · A concern · Something for Kashif's eyes only before your 1-on-1.</div>
+        </div>
+      </div>
+      <div class="grid-1">
+        <div class="field">
+          <label for="extra">Free text <span class="opt">(leave blank if nothing to add)</span></label>
+          <textarea id="extra" placeholder="I appreciated the specific feedback after last sprint — it was actionable. One ask: could we spend 5 mins at the start of each 1-on-1 reviewing my agreed actions from last time?"></textarea>
+          <div class="counter" id="extrac">0 / 1000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-card">
+      <h3>Ready to submit?</h3>
+      <p>Your response goes directly into the Qbil Employee Development database in Notion.<br>Kashif will review it within 48 hours.</p>
+      <button type="submit" class="btn" id="sbtn">
+        <div class="spin"></div>
+        <span class="btxt">Submit Self-Report →</span>
+      </button>
+    </div>
+
+  </form>
+
+  <!-- Success -->
+  <div id="ok">
+    <div class="ok-ring">✅</div>
+    <h2>Submitted — thank you!</h2>
+    <p>Your self-report for <strong id="ok-label"></strong> has been saved to Notion. Kashif will review it within 48 hours.</p>
+    <button class="btn-ghost" onclick="reset()">↩ Submit another response</button>
+  </div>
+
+</div><!-- /wrap -->
+
+<div id="toast"></div>
+
+<footer>
+  Qbil Software B.V. &nbsp;·&nbsp; Transformation Programme &nbsp;·&nbsp; 🔒 Visible to Kashif Qadri &amp; Mark Ellis only
+</footer>
+
+<script>
+// ─── CONFIG — replace with your Vercel deployment URL ─────────────────────
+const API_URL = 'https://YOUR-PROJECT.vercel.app/api/submit';
+//              ↑ After deploying to Vercel, paste your URL here and re-save.
+
+// ─── Fields tracked for progress ──────────────────────────────────────────
+const TRACKED = ['name','month','program','group','q1','q2','q3'];
+
+// ─── Build progress dots ───────────────────────────────────────────────────
+const dotsEl = document.getElementById('dots');
+TRACKED.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  d.id = `dot${i}`;
+  dotsEl.appendChild(d);
+});
+
+function updateProgress() {
+  let n = 0;
+  TRACKED.forEach((id, i) => {
+    const v = (document.getElementById(id)?.value || '').trim();
+    const d = document.getElementById(`dot${i}`);
+    if (v) { n++; d.className = 'dot done'; }
+    else   { d.className = 'dot'; }
+  });
+  const pct = Math.round((n / TRACKED.length) * 100);
+  document.getElementById('bar').style.width = pct + '%';
+  document.getElementById('pct').textContent = pct + '%';
+}
+
+// ─── Char counters ─────────────────────────────────────────────────────────
+function counter(id, countId, max) {
+  document.getElementById(id)?.addEventListener('input', function() {
+    const n = this.value.length;
+    const el = document.getElementById(countId);
+    el.textContent = `${n} / ${max}`;
+    el.className = 'counter' + (n > max ? ' danger' : n > max * .88 ? ' warn' : '');
+    updateProgress();
+  });
+}
+counter('q1',    'q1c',    800);
+counter('q2',    'q2c',    800);
+counter('q3',    'q3c',    500);
+counter('extra', 'extrac', 1000);
+
+['name','month','program','group'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input',  updateProgress);
+  document.getElementById(id)?.addEventListener('change', updateProgress);
+});
+
+// ─── Toast ─────────────────────────────────────────────────────────────────
+function toast(msg, type='', ms=3600) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `show ${type}`;
+  setTimeout(() => t.className = '', ms);
+}
+
+// ─── Validation ────────────────────────────────────────────────────────────
+const RULES = [
+  { id:'name',    eid:'name-e',    msg:'Please enter your full name.' },
+  { id:'month',   eid:'month-e',   msg:'Please enter the month (e.g. April 2026).' },
+  { id:'program', eid:'program-e', msg:'Please select your programme.' },
+  { id:'group',   eid:'group-e',   msg:'Please select your group.' },
+  { id:'q1',      eid:'q1-e',      msg:'Please answer Q1.' },
+  { id:'q2',      eid:'q2-e',      msg:'Please answer Q2.' },
+  { id:'q3',      eid:'q3-e',      msg:'Please answer Q3.' },
+];
+
+function validate() {
+  let ok = true;
+  RULES.forEach(r => {
+    const el = document.getElementById(r.id);
+    const ee = document.getElementById(r.eid);
+    if (!el.value.trim()) {
+      el.classList.add('invalid');
+      if (ee) { ee.textContent = r.msg; ee.classList.add('on'); }
+      ok = false;
+    } else {
+      el.classList.remove('invalid');
+      if (ee) ee.classList.remove('on');
+    }
+  });
+  return ok;
+}
+
+// Clear invalid on change
+document.querySelectorAll('input,select,textarea').forEach(el => {
+  ['input','change'].forEach(ev => el.addEventListener(ev, () => {
+    el.classList.remove('invalid');
+    const ee = document.getElementById(el.id + '-e');
+    if (ee) ee.classList.remove('on');
+  }));
+});
+
+// ─── Submit ────────────────────────────────────────────────────────────────
+document.getElementById('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!validate()) {
+    toast('⚠ Please fill in all required fields.', 'fail', 4500);
+    document.querySelector('.invalid')?.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const btn = document.getElementById('sbtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const payload = {
+    name:    document.getElementById('name').value.trim(),
+    month:   document.getElementById('month').value.trim(),
+    program: document.getElementById('program').value,
+    group:   document.getElementById('group').value,
+    q1:      document.getElementById('q1').value.trim(),
+    q2:      document.getElementById('q2').value.trim(),
+    q3:      document.getElementById('q3').value.trim(),
+    extra:   document.getElementById('extra').value.trim(),
+  };
+
+  try {
+    const res = await fetch(API_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      document.getElementById('form').style.display = 'none';
+      document.getElementById('ok').style.display = 'block';
+      document.getElementById('ok-label').textContent = `${payload.name} — ${payload.month}`;
+      toast('✅ Submitted successfully!', 'ok');
+    } else {
+      console.error('API error:', data);
+      toast('❌ Submission failed — please try again or contact Kashif.', 'fail', 5500);
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  } catch (err) {
+    console.error('Network error:', err);
+    toast('❌ Network error — please check your connection and try again.', 'fail', 5500);
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+});
+
+// ─── Reset ─────────────────────────────────────────────────────────────────
+function reset() {
+  document.getElementById('form').reset();
+  document.getElementById('form').style.display = 'block';
+  document.getElementById('ok').style.display   = 'none';
+  ['q1c','q2c','q3c','extrac'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = el.textContent.replace(/^\d+/, '0');
+  });
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ─── Init ──────────────────────────────────────────────────────────────────
+updateProgress();
+
+// Auto-fill current month
+const mo = ['January','February','March','April','May','June',
+            'July','August','September','October','November','December'];
+const now = new Date();
+document.getElementById('month').value = `${mo[now.getMonth()]} ${now.getFullYear()}`;
+updateProgress();
+</script>
+</body>
+</html>

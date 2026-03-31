@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "name": "qbil-self-report-form",
+  "routes": [
+    {
+      "src": "/api/submit",
+      "dest": "/api/submit.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ]
+}
