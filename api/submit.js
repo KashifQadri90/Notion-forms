@@ -9,7 +9,7 @@
 
 export const config = { runtime: 'edge' };
 
-const NOTION_DB_ID   = '8ff6d13a-c286-4b44-942c-fb97092cccd2';
+const NOTION_DB_ID   = '07df4aff2e0742f3a4bbccc70e72310f';
 const NOTION_VERSION = '2022-06-28';
 
 // Allowed origins — add your hosting domain here if needed
